@@ -26,7 +26,8 @@ class Create_db:
                 email TEXT NOT NULL,
                 birthdate DATE,
                 occupation TEXT,
-                study_center TEXT
+                study_center TEXT,
+                blocked TEXT DEFAULT 'False'
                 );
             """)
             print()
