@@ -53,7 +53,7 @@ class Create_db:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 author TEXT,
-                year_publication INTEGER,
+                year_publication INTEGER DEFAULT (strftime('%Y', 'now')),
                 publisher TEXT,
                 isbn_issn TEXT UNIQUE,
                 keywords TEXT,
@@ -74,7 +74,7 @@ class Create_db:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 article_id INTEGER NOT NULL,
                 state TEXT NOT NULL DEFAULT 'available', 
-                date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                date date DEFAULT (DATE('now')),
                 FOREIGN KEY (article_id) REFERENCES articles(id)
                 );
             """)

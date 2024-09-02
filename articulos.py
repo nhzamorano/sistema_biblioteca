@@ -17,3 +17,8 @@ class Articulo:
             isbn,
             palabras_clave,
             idCategoria))
+
+    def mostrar_articulos(self):
+        query = "SELECT id,title FROM articles"
+        articles = self.db.execute_query(query)
+        return articles

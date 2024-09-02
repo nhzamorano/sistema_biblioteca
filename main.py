@@ -2,10 +2,14 @@ import os
 from usuarios import Usuario
 from categorias import Categoria
 from articulos import Articulo
+from libros import Libro
+from prestamos import Prestamo
 
 user = Usuario()
 categoria = Categoria()
 articulo = Articulo()
+libro = Libro()
+prestamo = Prestamo()
 #user.registrarUsuario()
 def pedir_datos_usuario():
     idUsuario = input("Digite numero de cedula del usuario: ")
@@ -36,17 +40,6 @@ def pedir_datos_categoria():
     return nombre
 
 def pedir_datos_catalogo():
-    """
-                title TEXT NOT NULL,
-                author TEXT,
-                year_publication INTEGER,
-                publisher TEXT,
-                isbn_issn TEXT UNIQUE,
-                keywords TEXT,
-                creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                
-                categorie_id INTEGER NOT NULL,
-                FOREIGN KEY (categorie_id) REFERENCES categories(id)
-    """
     categorias=categoria.mostrar_categorias()
     print("")
     print("Categorias disponibles")
@@ -61,6 +54,45 @@ def pedir_datos_catalogo():
     palabras_clave = input("Digite las palabras cleve o keywords: ")
     idCategoria = input("Digite el numero de id de la categoria: ")
     return (titulo,autor,year,editorial,isbn,palabras_clave,idCategoria)
+
+def pedir_datos_libros():
+    libros = articulo.mostrar_articulos()
+    print()
+    print("Catalogo de articulos disponibles")
+    for libro in libros:
+        print(f"{libro[0]} : {libro[1]}")
+    print()
+    idLibro = input("Digite el codigo del libro: ")
+    estado = input("Digite el estado del libro: ")
+    return(idLibro,estado)
+
+def pedir_datos_prestamo():
+    """if libros == None:
+        print("No hay datos disponibles")
+    else:"""
+    books = libro.mostrar_libros()
+    if books != None:
+        print()
+        print("Listado de libros disponibles")
+        for book in books:
+            print(f"{book[0]} : {book[1]}")
+        print()
+        print("Usuarios ")
+        usuarios = user.mostrar_usuarios()        
+        for usuario in usuarios:
+            print(f"{usuario[0]} : {usuario[1]}")
+        print()
+    
+        idUsuario = input("Digite el numero de cedula del usuario: ")
+        idLibro = input("Digite el codigo del libro a prestar: ")
+        fecha_prestamo = input("Digite la fecha del prestamo (YYYY-MM-DD): ") 
+        fecha_devolucion = input("Digite la fecha de dvolucion (YYYY-MM-DD): ")
+        tipo_prestamo = input("Tipo prestamo, < Domiciliario > o < Sala >: ")
+        return(idUsuario,idLibro,fecha_prestamo,fecha_devolucion,tipo_prestamo)
+    else:
+        return False
+
+
 
 def menu():
     """Interaccion con el usuario"""
@@ -92,13 +124,20 @@ def menu():
             print("Agregar un articulo al catalogo")
             catalogo = pedir_datos_catalogo()
             articulo.registrar_articulo(catalogo)
-            
-            
-
         elif opcion == 4:
             print("Agregar un libro")
+            datos_libro = pedir_datos_libros()
+            libro.registrar_libro(datos_libro)
         elif opcion == 5:
             print("Agregar prestamo")
+            datos_prestamo = pedir_datos_prestamo()
+            if datos_prestamo == False:
+                print("No hay libros para prestar")
+            else:
+                prestamo.registrar_prestamo(datos_prestamo)
+                if prestamo:
+                    libro.actualizar_estado_libro(datos_prestamo[1])
+            
         elif opcion == 6:
             print("Agregar una multa")
         elif opcion == 7:

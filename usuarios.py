@@ -20,7 +20,12 @@ class Usuario:
             birthdate,
             ocupation,
             study_center))
-        
+
+    def mostrar_usuarios(self):
+        query = "SELECT identification,full_name FROM users WHERE blocked = 'False'" 
+        usuarios = self.db.execute_query(query)
+        return usuarios
+
     def validar_telefono(self,celular):
         if not celular.isdigit():
             return False
