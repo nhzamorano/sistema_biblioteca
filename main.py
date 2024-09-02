@@ -1,9 +1,11 @@
 import os
 from usuarios import Usuario
 from categorias import Categoria
+from articulos import Articulo
 
 user = Usuario()
 categoria = Categoria()
+articulo = Articulo()
 #user.registrarUsuario()
 def pedir_datos_usuario():
     idUsuario = input("Digite numero de cedula del usuario: ")
@@ -33,6 +35,33 @@ def pedir_datos_categoria():
     nombre = input("Digite el nombre de la categoria: ")
     return nombre
 
+def pedir_datos_catalogo():
+    """
+                title TEXT NOT NULL,
+                author TEXT,
+                year_publication INTEGER,
+                publisher TEXT,
+                isbn_issn TEXT UNIQUE,
+                keywords TEXT,
+                creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                
+                categorie_id INTEGER NOT NULL,
+                FOREIGN KEY (categorie_id) REFERENCES categories(id)
+    """
+    categorias=categoria.mostrar_categorias()
+    print("")
+    print("Categorias disponibles")
+    for cat in categorias:
+        print(f"{cat[0]} : {cat[1]}")
+    print()    
+    titulo = input("Digite el titulo del libro: ")
+    autor = input("Digite el autor del libro: ")
+    year = input("Digite el año de publicacion (YYYY-MM-DD): ")
+    editorial = input("Digite la editorial del libro: ")
+    isbn = input("Digite un isbn valido para el libro: ")
+    palabras_clave = input("Digite las palabras cleve o keywords: ")
+    idCategoria = input("Digite el numero de id de la categoria: ")
+    return (titulo,autor,year,editorial,isbn,palabras_clave,idCategoria)
+
 def menu():
     """Interaccion con el usuario"""
     os.system("cls")
@@ -41,7 +70,7 @@ def menu():
         print("\n\nSeleccione una opcion: ")
         print("    (1) Agregar un usuario")
         print("    (2) Agregar una categoria")
-        print("    (3) Agregar un articulo")
+        print("    (3) Agregar un articulo al catalogo")
         print("    (4) Agregar un libro")
         print("    (5) Agregar un prestamo")
         print("    (6) Agregar una multa")
@@ -60,7 +89,12 @@ def menu():
             datos_categoria = pedir_datos_categoria()
             categoria.registrar_categoria(datos_categoria)
         elif opcion == 3:
-            print("Agregar un articulo")
+            print("Agregar un articulo al catalogo")
+            catalogo = pedir_datos_catalogo()
+            articulo.registrar_articulo(catalogo)
+            
+            
+
         elif opcion == 4:
             print("Agregar un libro")
         elif opcion == 5:
